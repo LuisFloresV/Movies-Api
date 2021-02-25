@@ -1,15 +1,10 @@
 const express = require('express')
 const app = express()
-
+const moviesApi = require('./routes/movies')
 const config = require('./config/index')
 
-app.get('/', function (req, res, next) {
-  res.send('Hello World')
-})
-
-app.get('/json', function (req, res, next) {
-  res.json({ hello: "world" })
-})
+app.use(express.json())
+moviesApi(app)
 
 app.listen(config.port, () => {
   console.log(`Escuchando en el puerto ${config.port}`)
