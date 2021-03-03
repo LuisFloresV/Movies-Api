@@ -61,7 +61,7 @@ function moviesApi(app) {
       const deletedMovieId = await MoviesService.deleteMovie(req.params.movieId)
       res.status(200).json({
         data: deletedMovieId,
-        message: deletedMovieId  === false ? "Movie already deleted or doesnt exist!" : "Movie deleted!"
+        message: deletedMovieId === false ? "Movie already deleted or doesnt exist!" : "Movie deleted!"
       })
     } catch (error) {
       next(error)
