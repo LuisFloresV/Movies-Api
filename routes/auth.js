@@ -6,7 +6,10 @@ const ApiKeysService = require('../services/apiKeys')
 const config = require('../config/index')
 const { func } = require('joi')
 const { use } = require('passport')
-
+const UsersService = require('../services/users')
+const validationHandler = require('../utils/middleware/validationHandler')
+const scopesValidationHandler = require('../utils/middleware/scopesValidationHandler')
+const { createUserSchema } = require('../utils/schemas/users')
 //Basic strategy
 
 require('../utils/auth/strategies/basic')
@@ -16,6 +19,7 @@ function authApi(app) {
   app.use('/api/auth', router)
 
   const apiKeysService = new ApiKeysService()
+  const usersService = new UsersService()
 
   router.post('/sign-in', async function (req, res, next) {
     const { apiKeyToken } = req.body
@@ -24,7 +28,7 @@ function authApi(app) {
     }
 
     passport.authenticate('basic', function (error, user) {
- 
+
       try {
         if (error || !user) {
           next(boom.unauthorized())
@@ -53,6 +57,20 @@ function authApi(app) {
         next(error)
       }
     })(req, res, next)
+  })
+
+  router.post('/sign-up', validationHandler(createUserSchema), async function (req, res, next) {
+    const { body: user } = req
+    try {
+      const createdUserId = await usersService.createUser({ user })
+      res.status(201).json({
+        data: createdUserId,
+        message: 'User created'
+      })
+    } catch (error) {
+      next(error)
+    }
+
   })
 }
 
