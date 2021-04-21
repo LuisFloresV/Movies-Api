@@ -13,6 +13,6 @@ Para iniciar en modo de desarrollo la aplicacion:
 
 Si quieres consultar la api, puedes hacerlo en la siguiente direccion:
 
-**`https://movies-api-dun.vercel.app/api/movies`**
+**`https://naoko-weather-app.herokuapp.com/`**
 
 >Documentacion de la api en construción
